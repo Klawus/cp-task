@@ -1,0 +1,18 @@
+version: "3.4"
+
+x-common:
+  volumes: &volumes
+    - build:/app/build/
+    - .:/app:delegated
+    - ./.env.dist:/app/build/.env.dist
+    - ./.env:/app/build/.env
+
+services:
+  builder:
+    volumes: *volumes
+
+  js:
+    volumes: *volumes
+
+  web_api:
+    volumes: *volumes
