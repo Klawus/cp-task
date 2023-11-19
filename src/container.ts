@@ -6,12 +6,15 @@ import {
   asValue,
 } from "awilix";
 import http from "http";
-import { AppConfig, loadConfig } from "./config/app";
+import { DataSource } from "typeorm";
+import { AppConfig, loadAndParseConfig } from "./config/app";
 import { createApp } from "./app/app";
 import { registerCommonDependencies } from "./container/common";
+import { registerDatabase } from "./container/database";
 
 export interface ContainerDependencies {
   appConfig?: AppConfig;
+  dbDataSource?: DataSource;
 }
 
 export async function createContainer(
@@ -19,13 +22,14 @@ export async function createContainer(
 ): Promise<AwilixContainer> {
   const appConfig = dependencies?.appConfig
     ? dependencies.appConfig
-    : loadConfig();
+    : loadAndParseConfig();
 
   const container: AwilixContainer = createAwilixContainer({
     injectionMode: InjectionMode.PROXY,
   });
 
   registerCommonDependencies(container, appConfig);
+  await registerDatabase(container, dependencies);
 
   container.register({
     app: asFunction(createApp).singleton(),

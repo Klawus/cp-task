@@ -4,10 +4,15 @@ import { loadEnvs } from "./env";
 
 loadEnvs();
 
-const schema = z.object({
-  port: z.number().default(2000),
+const loadConfig = () => ({
+  port: Number(process.env.PORT),
 });
 
-export const loadConfig = () => parseInputAgainstSchema(schema, process.env);
+const schema = z.object({
+  port: z.number(),
+});
+
+export const loadAndParseConfig = () =>
+  parseInputAgainstSchema(schema, loadConfig());
 
 export type AppConfig = z.infer<typeof schema>;
