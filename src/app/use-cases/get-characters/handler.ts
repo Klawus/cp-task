@@ -1,6 +1,6 @@
-import { UseCaseHandler } from "../../../tools/use-case-bus";
+import { UseCaseHandler } from "../../../shared/use-case-bus";
 import { CharacterReadRepository } from "../../domain/ports/character-read.repository";
-import { GET_CHARACTERS_USE_CASE_NAME, GetCharactersUseCase } from "./use-case";
+import { GET_CHARACTERS_USE_CASE_NAME, GetCharactersUseCase } from ".";
 
 export interface GetCharactersUseCaseDependencies {
   characterReadRepository: CharacterReadRepository;

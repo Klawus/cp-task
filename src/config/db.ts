@@ -1,7 +1,7 @@
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { DataSource } from "typeorm";
 import z from "zod";
-import { parseInputAgainstSchema } from "../tools/parse-against-schema";
+import { parseInputAgainstSchema } from "../shared/functions/parse-against-schema";
 
 const schema = z.object({
   type: z.literal("postgres"),
@@ -25,7 +25,7 @@ const loadDbConfig = () => ({
   username: process.env.RDS_USERNAME,
   password: process.env.RDS_PASSWORD,
   synchronize: false,
-  logging: true,
+  logging: false,
   entities: ["/app/build/src/app/**/*.entity.js"],
   migrations: ["/app/build/src/migrations/*"],
   namingStrategy: new SnakeNamingStrategy(),

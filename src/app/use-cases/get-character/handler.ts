@@ -1,9 +1,9 @@
 import { CharacterEntity } from "../../entities/character.entity";
 import { NotFoundResourceError } from "../../../errors";
-import { orFail } from "../../../tools/or-fail";
-import { UseCaseHandler } from "../../../tools/use-case-bus";
+import { orFail } from "../../../shared/functions/or-fail";
+import { UseCaseHandler } from "../../../shared/use-case-bus";
 import { CharacterReadRepository } from "../../domain/ports/character-read.repository";
-import { GET_CHARACTER_USE_CASE_NAME, GetCharacterUseCase } from "./use-case";
+import { GET_CHARACTER_USE_CASE_NAME, GetCharacterUseCase } from ".";
 
 export interface GetCharacterUseCaseDependencies {
   characterReadRepository: CharacterReadRepository;

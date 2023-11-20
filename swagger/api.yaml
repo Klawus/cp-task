@@ -3,4 +3,120 @@ info:
   version: 1.0.0
   title: Web API
 servers:
-  - url: http://localhost:1337/api
+  - url: http://localhost:2000/api
+paths:
+  /characters:
+    post:
+      summary: Example to create character
+      operationId: createCharacter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  required: true
+                  minLength: 3
+                episodeIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              example:
+                name: Super test name
+      tags:
+        - characters
+      responses:
+        '201':
+          description: Create character succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"
+    get:
+      summary: Example to get paginated characters
+      operationId: getCharacters
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          type: number
+      - in: query
+        name: offset
+        schema:
+          type: number
+      - in: query
+        name: query
+        schema:
+          type: string
+      tags:
+        - characters
+      responses:
+        '200':
+          description: Get paginated characters succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                  - page
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Character"
+                  page:
+                    type: object
+                    properties:
+                      limit:
+                        type: number
+                      offset:
+                        type: number
+                      count:
+                        type: number
+                      totalCount:
+                        type: number
+                      hasNextPage:
+                        type: boolean
+                      hasPreviousPage:
+                        type: boolean
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"
+    
+
+
+components:
+  schemas:
+    InternalError:
+      $ref: 'schemas/internal-error.yaml'
+    ValidationError:
+      $ref: 'schemas/validation-error.yaml'
+    Character:
+      $ref: 'schemas/character.yaml'
+    Episode:
+      $ref: 'schemas/episode.yaml'

@@ -1,15 +1,13 @@
 import { Character } from "../../domain/character";
-import { UseCaseHandler } from "../../../tools/use-case-bus";
-import { CharacterReadRepository } from "../../domain/ports/character-read.repository";
-import {
-  CREATE_CHARACTER_USE_CASE_NAME,
-  CreateCharacterUseCase,
-} from "./use-case";
+import { UseCaseHandler } from "../../../shared/use-case-bus";
+import { CREATE_CHARACTER_USE_CASE_NAME, CreateCharacterUseCase } from ".";
 import { CharacterWriteRepository } from "../../domain/ports/character-write.repository";
+import { EpisodeReadRepository } from "../../domain/ports/episode-read.repository";
+import { ValidationError } from "../../../errors";
 
 export interface CreateCharacterUseCaseDependencies {
-  characterReadRepository: CharacterReadRepository;
   characterWriteRepository: CharacterWriteRepository;
+  episodeReadRepository: EpisodeReadRepository;
 }
 
 export class CreateCharacterUseCaseHandler
@@ -20,9 +18,17 @@ export class CreateCharacterUseCaseHandler
   constructor(private dependencies: CreateCharacterUseCaseDependencies) {}
 
   async handle(input: CreateCharacterUseCase) {
-    const { characterWriteRepository } = this.dependencies;
+    const { characterWriteRepository, episodeReadRepository } =
+      this.dependencies;
+    const { name, episodeIds } = input.payload;
 
-    const character = new Character(input.payload);
+    const episodes = await episodeReadRepository.findByIds(episodeIds);
+
+    if (episodes.length !== episodeIds.length) {
+      throw new ValidationError("One of episodes doesn't exist");
+    }
+
+    const character = new Character({ name, episodes });
 
     await characterWriteRepository.save(character);
 

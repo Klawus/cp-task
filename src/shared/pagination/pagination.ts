@@ -1,24 +1,6 @@
 import z from "zod";
-
-export type PageOutput = {
-  limit: number;
-  offset: number;
-  totalCount: number;
-};
-
-export type PageParams = {
-  limit: number;
-  offset: number;
-  count: number;
-  totalCount: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-};
-
-export interface Page<T> {
-  data: T[];
-  page: PageParams;
-}
+import { Page, PageOutput } from "./pagination.types";
+import { preprocessString } from "../preprocess-string";
 
 export function paginate<T>(
   data: T[],
@@ -38,8 +20,14 @@ export function paginate<T>(
 }
 
 export const PAGE_REQUEST_SCHEMA = z.strictObject({
-  offset: z.string().transform((it) => Number(it) ?? 0),
-  limit: z.string().transform((it) => Number(it) ?? 10),
+  offset: z.preprocess(
+    preprocessString,
+    z.number().int().min(0).optional().default(0),
+  ),
+  limit: z.preprocess(
+    preprocessString,
+    z.number().int().min(1).optional().default(10),
+  ),
 });
 
 export type PageRequest = z.infer<typeof PAGE_REQUEST_SCHEMA>;
@@ -48,3 +36,5 @@ export const DEFAULT_PAGE_REQUEST: Required<PageRequest> = {
   offset: 0,
   limit: 10,
 };
+
+export { Page, PageOutput };

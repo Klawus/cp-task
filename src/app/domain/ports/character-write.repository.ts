@@ -1,6 +1,7 @@
+import { UUID } from "../../../shared/value-objects/uuid";
 import { Character } from "../character";
 
 export interface CharacterWriteRepository {
-  save(company: Character): Promise<Character>;
-  update(company: Character): Promise<Character>;
+  save(character: Character): Promise<Character>;
+  delete(id: UUID): Promise<void>;
 }

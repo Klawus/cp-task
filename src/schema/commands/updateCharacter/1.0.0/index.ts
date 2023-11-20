@@ -7,6 +7,10 @@ export const UPDATE_CHARACTER_SCHEMA = z.object({
   }),
   body: z.strictObject({
     name: z.string(),
+    episodeIds: z
+      .array(uuid())
+      .optional()
+      .transform((val) => val ?? []),
   }),
 });
 

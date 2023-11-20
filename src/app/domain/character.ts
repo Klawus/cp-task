@@ -1,5 +1,5 @@
 import { ValidationError } from "../../errors";
-import { UUID } from "../value-objects/uuid";
+import { UUID } from "../../shared/value-objects/uuid";
 import { Episode, EpisodeJSON } from "./episode";
 
 type CharacterProto = {
@@ -14,7 +14,7 @@ type CharacterJSON = {
   episodes: EpisodeJSON[];
 };
 
-type UpdateCharacterCmd = Pick<CharacterProto, "name">;
+type UpdateCharacterCmd = Pick<CharacterProto, "name" | "episodes">;
 
 export class Character {
   readonly id: UUID;
@@ -36,9 +36,14 @@ export class Character {
     this._episodes = proto.episodes ?? [];
   }
 
-  update(changes: Pick<CharacterProto, "name">) {
+  get episodes(): Episode[] {
+    return [...this._episodes];
+  }
+
+  update(changes: UpdateCharacterCmd) {
     Character.validate(changes);
     this._name = changes.name;
+    this._episodes = changes.episodes ?? [];
     return this;
   }
 

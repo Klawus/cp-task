@@ -1,5 +1,5 @@
 import { ValidationError } from "../../errors";
-import { UUID } from "../value-objects/uuid";
+import { UUID } from "../../shared/value-objects/uuid";
 
 type EpisodeProto = {
   id?: UUID;

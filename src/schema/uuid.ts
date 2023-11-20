@@ -1,5 +1,5 @@
 import z from "zod";
-import { UUID } from "../app/value-objects/uuid";
+import { UUID } from "../shared/value-objects/uuid";
 
 export const uuid = () =>
   z

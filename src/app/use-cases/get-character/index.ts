@@ -1,5 +1,5 @@
 import { GetCharacterInputTransformed } from "../../../schema/queries/getCharacter/1.0.0";
-import { UseCase, USE_CASE_TYPE } from "../../../tools/use-case-bus";
+import { UseCase, USE_CASE_TYPE } from "../../../shared/use-case-bus";
 
 export const GET_CHARACTER_USE_CASE_NAME = "character/GET";
 

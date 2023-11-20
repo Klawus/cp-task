@@ -1,9 +1,11 @@
 import { AwilixContainer, asClass, asValue } from "awilix";
 import { Logger } from "winston";
-import { TypeORMCharacterReadRepository } from "../app/infra/adapters/character-read.repository";
-import { TypeORMCharacterWriteRepository } from "../app/infra/adapters/character-write.repository";
 import { ContainerDependencies } from "../container";
 import { dataSource } from "../config/db";
+import { TypeORMCharacterReadRepository } from "../app/infra/adapters/character-read.repository";
+import { TypeORMCharacterWriteRepository } from "../app/infra/adapters/character-write.repository";
+import { TypeORMEpisodeReadRepository } from "../app/infra/adapters/episode-read.repository";
+import { TypeORMEpisodeWriteRepository } from "../app/infra/adapters/episode-write.repository";
 
 export async function registerDatabase(
   container: AwilixContainer,
@@ -23,5 +25,7 @@ export async function registerDatabase(
     entityManager: asValue(dbDataSource.manager),
     characterReadRepository: asClass(TypeORMCharacterReadRepository),
     characterWriteRepository: asClass(TypeORMCharacterWriteRepository),
+    episodeReadRepository: asClass(TypeORMEpisodeReadRepository),
+    episodeWriteRepository: asClass(TypeORMEpisodeWriteRepository),
   });
 }

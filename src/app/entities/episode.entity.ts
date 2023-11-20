@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { Episode } from "../domain/episode";
-import { UUID } from "../value-objects/uuid";
+import { UUID } from "../../shared/value-objects/uuid";
 
 @Entity({ name: "episodes" })
 export class EpisodeEntity extends BaseEntity {

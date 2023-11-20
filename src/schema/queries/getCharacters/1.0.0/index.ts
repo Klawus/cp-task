@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PAGE_REQUEST_SCHEMA } from "../../../../tools/pagination";
+import { PAGE_REQUEST_SCHEMA } from "../../../../shared/pagination/pagination";
 
 export const GET_CHARACTERS_SCHEMA = z.object({
   query: PAGE_REQUEST_SCHEMA.extend({

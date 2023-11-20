@@ -1,5 +1,5 @@
-import { Page, PageRequest } from "../../../tools/pagination";
-import { UUID } from "../../value-objects/uuid";
+import { Page, PageRequest } from "../../../shared/pagination/pagination";
+import { UUID } from "../../../shared/value-objects/uuid";
 import { Character } from "../character";
 
 export interface GetCharactersParams {

@@ -1,6 +1,6 @@
 import { objectOutputType, ZodIssue, ZodRawShape, ZodTypeAny } from "zod";
-import { InputValidationError } from "../errors";
-import { Schema } from "../types";
+import { InputValidationError } from "../../errors";
+import { Schema } from "../../types";
 
 function formatErrorDetails(issues: ZodIssue[]): Record<string, string[]> {
   return issues.reduce(

@@ -2,12 +2,17 @@
   "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
     "outDir": "build",
+    "types": ["node", "mocha"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "paths": {
+      "*": ["typings/*"]
+    }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "typings/*"],
   "exclude": ["node_modules", "build/**"],
   "watchOptions": {
     "watchFile": "DynamicPriorityPolling",

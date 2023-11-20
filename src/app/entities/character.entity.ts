@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from "typeorm";
 import { Character } from "../domain/character";
 import { BaseEntity } from "./base.entity";
-import { UUID } from "../value-objects/uuid";
+import { UUID } from "../../shared/value-objects/uuid";
 import { EpisodeEntity } from "./episode.entity";
 
 @Entity({ name: "characters" })
@@ -12,7 +12,7 @@ export class CharacterEntity extends BaseEntity {
   @Column()
   name!: string;
 
-  @ManyToMany(() => EpisodeEntity)
+  @ManyToMany(() => EpisodeEntity, { cascade: true })
   @JoinTable()
   episodes?: EpisodeEntity[];
 
@@ -25,6 +25,15 @@ export class CharacterEntity extends BaseEntity {
   }
 
   static toEntity(character: Character): CharacterEntity {
-    return Object.assign(new CharacterEntity(), character.toJSON());
+    const episodes = character.episodes?.map((it) =>
+      EpisodeEntity.toEntity(it),
+    );
+
+    const data = {
+      ...character.toJSON(),
+      episodes,
+    };
+
+    return Object.assign(new CharacterEntity(), data);
   }
 }

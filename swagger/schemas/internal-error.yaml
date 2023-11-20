@@ -1,0 +1,15 @@
+type: object
+required:
+  - errorCode
+  - name
+  - message
+  - stack
+properties:
+  errorCode:
+    type: string
+  name:
+    type: string
+  message:
+    type: string
+  stack:
+    type: string

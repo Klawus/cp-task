@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { parseInputAgainstSchema } from "../tools/parse-against-schema";
+import { parseInputAgainstSchema } from "../shared/functions/parse-against-schema";
 import { loadEnvs } from "./env";
 
 loadEnvs();

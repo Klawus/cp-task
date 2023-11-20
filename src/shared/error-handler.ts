@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { Logger } from "winston";
-import { AppError } from "../errors";
+import { AppError, ErrorCode } from "../errors";
 
 export const errorHandler =
   ({ logger }: { logger: Logger }) =>
@@ -10,13 +10,16 @@ export const errorHandler =
 
     if (err instanceof AppError) {
       return res.status(err.httpCode).json({
-        error: err.message,
+        errorCode: err.errorCode,
+        message: err.message,
         details: err.details,
       });
     }
 
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errorCode: ErrorCode.UNRECOGNIZED_ERROR,
+      message: err.message,
       name: err.name,
-      error: err.message,
+      stack: err.stack,
     });
   };

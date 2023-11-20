@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { ValidationError } from "../../errors";
-import { ValueObject } from "../../tools/value-object";
+import { ValueObject } from "./value-object";
 
 export class UUID extends ValueObject<{ value: string }> {
   static readonly ERROR_CODE = "INVALID_UUID";

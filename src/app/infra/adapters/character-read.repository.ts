@@ -1,6 +1,6 @@
 import { EntityManager, ILike, Repository } from "typeorm";
 import { Character } from "../../domain/character";
-import { UUID } from "../../value-objects/uuid";
+import { UUID } from "../../../shared/value-objects/uuid";
 import { CharacterEntity } from "../../entities/character.entity";
 import {
   CharacterReadRepository,
@@ -10,7 +10,7 @@ import {
   DEFAULT_PAGE_REQUEST,
   Page,
   paginate,
-} from "../../../tools/pagination";
+} from "../../../shared/pagination/pagination";
 
 interface TypeORMCharacterReadRepositoryDependencies {
   entityManager: EntityManager;
@@ -27,7 +27,7 @@ export class TypeORMCharacterReadRepository implements CharacterReadRepository {
 
   async findById(id: UUID): Promise<Character | undefined> {
     return this.repo
-      .findOne({ where: { id: id.value } })
+      .findOne({ where: { id: id.value }, relations: ["episodes"] })
       .then((it) => it?.toDomain());
   }
 
@@ -42,6 +42,7 @@ export class TypeORMCharacterReadRepository implements CharacterReadRepository {
       take: limit,
       skip: offset,
       order: { createdAt: "DESC" },
+      relations: ["episodes"],
       ...(query && { where: { name: ILike(`%${query}%`) } }),
     });
 

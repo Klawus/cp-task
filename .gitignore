@@ -33,3 +33,6 @@ build/
 
 # Vscode options
 .vscode/
+
+# nyc test coverage
+.nyc_output
