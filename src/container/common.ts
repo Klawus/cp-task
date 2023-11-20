@@ -1,8 +1,9 @@
-import { AwilixContainer, asFunction, asValue } from "awilix";
+import { AwilixContainer, asClass, asFunction, asValue } from "awilix";
 import { createLogger, transports } from "winston";
 import { createRouter } from "../app/router";
 import { AppConfig } from "../config/app";
 import { errorHandler } from "../tools/error-handler";
+import { UseCaseBus } from "../tools/use-case-bus";
 
 export function registerCommonDependencies(
   container: AwilixContainer,
@@ -18,6 +19,7 @@ export function registerCommonDependencies(
     port: asValue(appConfig.port),
     appConfig: asValue(appConfig),
     router: asFunction(createRouter).singleton(),
+    useCaseBus: asClass(UseCaseBus).classic().singleton(),
     errorHandler: asFunction(errorHandler),
   });
 

@@ -20,5 +20,6 @@ export function parseInputAgainstSchema<T extends ZodRawShape>(
   if (parsed.success) {
     return parsed.data;
   }
+
   throw new InputValidationError(formatErrorDetails(parsed.error.issues));
 }

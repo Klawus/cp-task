@@ -11,6 +11,7 @@ import { AppConfig, loadAndParseConfig } from "./config/app";
 import { createApp } from "./app/app";
 import { registerCommonDependencies } from "./container/common";
 import { registerDatabase } from "./container/database";
+import { registerCommandHandlers } from "./container/use-case-handlers";
 
 export interface ContainerDependencies {
   appConfig?: AppConfig;
@@ -29,6 +30,7 @@ export async function createContainer(
   });
 
   registerCommonDependencies(container, appConfig);
+  registerCommandHandlers(container);
   await registerDatabase(container, dependencies);
 
   container.register({

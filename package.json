@@ -10,6 +10,10 @@
     "docker-build-prod": "docker build -t web-api:latest -f ./docker/prod/Dockerfile .",
     "down": "docker compose down -v",
     "watch": "docker compose up builder",
+    "generate-migration": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:generate ./src/migrations/migration -d ./build/src/config/db",
+    "run-migrations": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:run -d ./build/src/config/db",
+    "revert-migration": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:revert -d ./build/src/config/db",
+    "create-migration": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:create ./src/migrations/migration",
     "lint": "./node_modules/.bin/eslint --ext .ts ./",
     "lint:fix": "npm run lint -- --fix",
     "format:all": "prettier --write ."
@@ -54,6 +58,7 @@
     "http-status-codes": "^2.3.0",
     "json-refs": "^3.0.15",
     "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",
     "swagger-ui-express": "^5.0.0",
     "typeorm": "^0.3.17",

@@ -11,11 +11,12 @@ export const errorHandler =
     if (err instanceof AppError) {
       return res.status(err.httpCode).json({
         error: err.message,
+        details: err.details,
       });
     }
 
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "INTERNAL_SERVER_ERROR",
-      message: err.message,
+      name: err.name,
+      error: err.message,
     });
   };

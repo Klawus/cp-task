@@ -4,6 +4,8 @@ type UUID = string;
 type PropertyPath = string;
 type ErrorMessages = string[];
 
+export class CommandNotSupportedError extends Error {}
+
 export abstract class AppError extends Error {
   protected constructor(
     message: string,
@@ -24,6 +26,18 @@ export class InputValidationError extends AppError {
   }
 }
 
+export class ValidationError extends AppError {
+  constructor(message: string) {
+    super(message, StatusCodes.UNPROCESSABLE_ENTITY);
+  }
+}
+
+export class UseCaseError extends AppError {
+  constructor(message: string) {
+    super(message, StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
 export class NotFoundError extends AppError {
   constructor() {
     super("Page not found", StatusCodes.NOT_FOUND);
@@ -39,16 +53,4 @@ export class NotFoundResourceError extends AppError {
       StatusCodes.NOT_FOUND,
     );
   }
-}
-
-export enum ErrorType {
-  VALIDATION_ERROR = "VALIDATION_ERROR",
-  NOT_FOUND_ERROR = "NOT_FOUND_ERROR",
-  NOT_FOUND_RESOURCE_ERROR = "NOT_FOUND_RESOURCE_ERROR",
-  INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
-  UNPROCESSABLE_ENTITY_ERROR = "UNPROCESSABLE_ENTITY_ERROR",
-  UNAUTHORIZED_ERROR = "UNAUTHORIZED_ERROR",
-  INPUT_VALIDATION_ERROR = "INPUT_VALIDATION_ERROR",
-  CONFLICTING_STATE_ERROR = "CONFLICTING_STATE_ERROR",
-  ALREADY_EXISTS_ERROR = "ALREADY_EXISTS_ERROR",
 }

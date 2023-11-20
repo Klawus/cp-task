@@ -1,5 +1,7 @@
-import { AwilixContainer, asValue } from "awilix";
+import { AwilixContainer, asClass, asValue } from "awilix";
 import { Logger } from "winston";
+import { TypeORMCharacterReadRepository } from "../app/infra/adapters/character-read.repository";
+import { TypeORMCharacterWriteRepository } from "../app/infra/adapters/character-write.repository";
 import { ContainerDependencies } from "../container";
 import { dataSource } from "../config/db";
 
@@ -18,5 +20,8 @@ export async function registerDatabase(
   }
   container.register({
     dbDataSource: asValue(dbDataSource),
+    entityManager: asValue(dbDataSource.manager),
+    characterReadRepository: asClass(TypeORMCharacterReadRepository),
+    characterWriteRepository: asClass(TypeORMCharacterWriteRepository),
   });
 }
