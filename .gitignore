@@ -36,3 +36,6 @@ build/
 
 # nyc test coverage
 .nyc_output
+
+# Docker-compose override file
+docker-compose.override.yml

@@ -12,7 +12,6 @@ import { NotFoundError } from "../errors";
 export interface AppDependencies {
   router: express.Router;
   errorHandler: MiddlewareType;
-  graphQLSchema: string;
   appConfig: AppConfig;
 }
 

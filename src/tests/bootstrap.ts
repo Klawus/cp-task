@@ -6,9 +6,12 @@ import "express-async-errors";
 import { createContainer } from "../container";
 import { config } from "../config/db";
 import "express-async-errors";
-import { CharacterEntity } from "../app/entities/character.entity";
-import { EpisodeEntity } from "../app/entities/episode.entity";
-import { EXISTING_EPISODE, ARRAY_OF_EXISTING_CHARACTERS } from "./default-data";
+import { CharacterEntity } from "../app/infra/database/entities/character.entity";
+import { EpisodeEntity } from "../app/infra/database/entities/episode.entity";
+import {
+  ARRAY_OF_EXISTING_CHARACTERS,
+  ARRAY_OF_EXISTING_EPISODES,
+} from "./default-data";
 
 use(chaiAsPromised);
 
@@ -24,7 +27,11 @@ const insertDefaultRecord = async (
     );
   }
   if (tableName === "episodes") {
-    await repository.insert(EpisodeEntity.toEntity(EXISTING_EPISODE));
+    await Promise.all(
+      ARRAY_OF_EXISTING_EPISODES.map(async (it) => {
+        await repository.insert(EpisodeEntity.toEntity(it));
+      }),
+    );
   }
 };
 

@@ -27,7 +27,7 @@ const loadDbConfig = () => ({
   synchronize: false,
   logging: false,
   entities: ["/app/build/src/app/**/*.entity.js"],
-  migrations: ["/app/build/src/migrations/*"],
+  migrations: ["/app/build/src/app/infra/database/migrations/*"],
   namingStrategy: new SnakeNamingStrategy(),
 });
 

@@ -6,7 +6,8 @@ required:
 properties:
   errorCode:
     type: string
+    value: VALIDATION_ERROR
   message:
     type: string
   details:
-    type: string
+    type: object

@@ -5,6 +5,7 @@ import { ErrorCode } from "../errors";
 import {
   DEFAULT_CHARACTER_INPUT,
   EXISTING_CHARACTER,
+  EXISTING_EPISODE,
   NOT_EXISTING_UUID,
 } from "./default-data";
 
@@ -13,7 +14,7 @@ describe("GET /api/characters/:id", () => {
     const response = await request(await global.container.cradle.app).get(
       `/api/characters/${EXISTING_CHARACTER.id.value}`,
     );
-    expect(response.body.name).to.eq(DEFAULT_CHARACTER_INPUT.name);
+    expect(response.body.name).to.eq(EXISTING_CHARACTER.name);
     expect(response.status).to.eq(StatusCodes.OK);
   });
 
@@ -36,7 +37,7 @@ describe("DELETE /api/characters/:id", () => {
       `/api/characters/${EXISTING_CHARACTER.id.value}`,
     );
 
-    expect(response.body.name).to.eq(DEFAULT_CHARACTER_INPUT.name);
+    expect(response.body.name).to.eq(EXISTING_CHARACTER.name);
     expect(response.status).to.eq(StatusCodes.OK);
 
     const responseAfterDelete = await request(
@@ -74,6 +75,19 @@ describe("POST /api/characters", () => {
     expect(response.status).to.eq(StatusCodes.CREATED);
   });
 
+  it("should create character with episode", async () => {
+    const response = await request(await global.container.cradle.app)
+      .post("/api/characters")
+      .send({
+        ...DEFAULT_CHARACTER_INPUT,
+        episodeIds: [EXISTING_EPISODE.id.value],
+      });
+
+    expect(response.body.name).to.eq(DEFAULT_CHARACTER_INPUT.name);
+    expect(response.body.episodes[0].id).to.eq(EXISTING_EPISODE.id.value);
+    expect(response.status).to.eq(StatusCodes.CREATED);
+  });
+
   it("should create character with only name", async () => {
     const { name } = DEFAULT_CHARACTER_INPUT;
 
@@ -92,7 +106,7 @@ describe("POST /api/characters", () => {
 
     expect(response.body.errorCode).to.eq(ErrorCode.INPUT_VALIDATION_ERROR);
     expect(response.body.details).to.have.property("body.name");
-    expect(response.status).to.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+    expect(response.status).to.eq(StatusCodes.BAD_REQUEST);
   });
 
   it("should return error (One of episodes doesn't exist)", async () => {
@@ -105,7 +119,7 @@ describe("POST /api/characters", () => {
 
     expect(response.body.errorCode).to.eq(ErrorCode.VALIDATION_ERROR);
     expect(response.body.message).to.eq("One of episodes doesn't exist");
-    expect(response.status).to.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+    expect(response.status).to.eq(StatusCodes.BAD_REQUEST);
   });
 
   it("should return error (Name must be at least 3 characters long)", async () => {
@@ -116,7 +130,18 @@ describe("POST /api/characters", () => {
     expect(response.body.message).to.eq(
       "Name must be at least 3 characters long",
     );
-    expect(response.status).to.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+    expect(response.status).to.eq(StatusCodes.BAD_REQUEST);
+  });
+
+  it("should return error (Character already exits)", async () => {
+    const response = await request(await global.container.cradle.app)
+      .post("/api/characters")
+      .send({ name: EXISTING_CHARACTER.name });
+    expect(response.body.errorCode).to.eq(ErrorCode.ALREADY_EXISTS_ERROR);
+    expect(response.body.message).to.eq(
+      "Character with given [name] already exists",
+    );
+    expect(response.status).to.eq(StatusCodes.CONFLICT);
   });
 });
 
@@ -150,7 +175,7 @@ describe("PUT /api/characters/:id", () => {
 
     expect(response.body.errorCode).to.eq(ErrorCode.INPUT_VALIDATION_ERROR);
     expect(response.body.details).to.have.property("body.name");
-    expect(response.status).to.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+    expect(response.status).to.eq(StatusCodes.BAD_REQUEST);
   });
 
   it("should return error (One of episodes doesn't exist)", async () => {
@@ -163,7 +188,7 @@ describe("PUT /api/characters/:id", () => {
 
     expect(response.body.errorCode).to.eq(ErrorCode.VALIDATION_ERROR);
     expect(response.body.message).to.eq("One of episodes doesn't exist");
-    expect(response.status).to.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+    expect(response.status).to.eq(StatusCodes.BAD_REQUEST);
   });
 
   it("should return error (Name must be at least 3 characters long)", async () => {
@@ -174,7 +199,7 @@ describe("PUT /api/characters/:id", () => {
     expect(response.body.message).to.eq(
       "Name must be at least 3 characters long",
     );
-    expect(response.status).to.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+    expect(response.status).to.eq(StatusCodes.BAD_REQUEST);
   });
 });
 
@@ -205,7 +230,7 @@ describe("GET /api/characters", () => {
     );
 
     expect(response.body.data).to.be.an("array");
-    expect(response.body.data[0].name).to.eq("Test 1");
+    expect(response.body.data[0].name).to.eq("Test 1 Character");
     expect(response.body.page.count).to.eq(1);
     expect(response.status).to.eq(StatusCodes.OK);
   });

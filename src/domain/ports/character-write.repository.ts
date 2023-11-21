@@ -1,4 +1,4 @@
-import { UUID } from "../../../shared/value-objects/uuid";
+import { UUID } from "../../shared/value-objects/uuid";
 import { Character } from "../character";
 
 export interface CharacterWriteRepository {

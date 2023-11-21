@@ -1,5 +1,5 @@
-import { ValidationError } from "../../errors";
-import { UUID } from "../../shared/value-objects/uuid";
+import { ValidationError } from "../errors";
+import { UUID } from "../shared/value-objects/uuid";
 
 type EpisodeProto = {
   id?: UUID;
@@ -20,6 +20,10 @@ export class Episode {
     if (data.name.length < 4) {
       throw new ValidationError("Name must be at least 3 characters long");
     }
+  }
+
+  get name(): string {
+    return this._name;
   }
 
   constructor(proto: EpisodeProto) {

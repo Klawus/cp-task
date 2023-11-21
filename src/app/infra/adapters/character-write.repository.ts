@@ -1,7 +1,7 @@
 import { EntityManager, Repository } from "typeorm";
-import { Character } from "../../domain/character";
-import { CharacterEntity } from "../../entities/character.entity";
-import { CharacterWriteRepository } from "../../domain/ports/character-write.repository";
+import { Character } from "../../../domain/character";
+import { CharacterEntity } from "../database/entities/character.entity";
+import { CharacterWriteRepository } from "../../../domain/ports/character-write.repository";
 import { UUID } from "../../../shared/value-objects/uuid";
 
 interface TypeORMCharacterWriteRepositoryDependencies {

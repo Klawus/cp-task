@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from "typeorm";
-import { Character } from "../domain/character";
+import { Character } from "../../../../domain/character";
 import { BaseEntity } from "./base.entity";
-import { UUID } from "../../shared/value-objects/uuid";
+import { UUID } from "../../../../shared/value-objects/uuid";
 import { EpisodeEntity } from "./episode.entity";
 
 @Entity({ name: "characters" })

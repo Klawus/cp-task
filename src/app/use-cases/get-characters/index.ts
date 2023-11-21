@@ -1,9 +1,9 @@
-import { GetCharacterInputTransformed } from "../../../schema/queries/getCharacters/1.0.0";
+import { GetCharactersInputTransformed } from "../../../schema/queries/getCharacters/1.0.0";
 import { UseCase, USE_CASE_TYPE } from "../../../shared/use-case-bus";
 
-export const GET_CHARACTERS_USE_CASE_NAME = "character/GET_PAGINATED";
+export const GET_CHARACTERS_USE_CASE_NAME = "characters/GET_PAGINATED";
 
-export type GetCharactersPayload = GetCharacterInputTransformed["query"];
+export type GetCharactersPayload = GetCharactersInputTransformed["query"];
 
 export class GetCharactersUseCase implements UseCase<GetCharactersPayload> {
   public readonly type = USE_CASE_TYPE.QUERY;

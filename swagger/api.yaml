@@ -35,7 +35,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Character"
-        '422':
+        '400':
           description: Validation error
           content:
             application/json:
@@ -95,7 +95,7 @@ paths:
                         type: boolean
                       hasPreviousPage:
                         type: boolean
-        '422':
+        '400':
           description: Validation error
           content:
             application/json:
@@ -107,9 +107,243 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InternalError"
-    
-
-
+  /characters/{characterId}: 
+    get:
+      summary: Example to getting character
+      parameters:
+        - in: path
+          name: characterId
+          schema:
+            type: string
+            format: uuid
+          required: true
+      operationId: getCharacterById
+      tags:
+        - characters
+      responses:
+        '200':
+          description: Get character by id succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"  
+    delete:
+      summary: Example to deleting character by id
+      parameters:
+        - in: path
+          name: characterId
+          schema:
+            type: string
+            format: uuid
+          required: true
+      operationId: deleteCharacterById
+      tags:
+        - characters
+      responses:
+        '200':
+          description: Delete character by id succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"  
+    put:
+      summary: Example to updating character
+      parameters:
+        - in: path
+          name: characterId
+          schema:
+            type: string
+            format: uuid
+          required: true
+      operationId: updateCharacter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  required: true
+                  minLength: 3
+                episodeIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              example:
+                name: Super test name
+      tags:
+        - characters
+      responses:
+        '200':
+          description: Update character succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"  
+  /episodes:
+    post:
+      summary: Example to create episode
+      operationId: createEpisode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  required: true
+                  minLength: 3
+              example:
+                name: Super Episode
+      tags:
+        - episodes
+      responses:
+        '201':
+          description: Create episode succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Episode"
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"
+    get:
+      summary: Example to get paginated episodes
+      operationId: getEpisodes
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          type: number
+      - in: query
+        name: offset
+        schema:
+          type: number
+      tags:
+        - episodes
+      responses:
+        '200':
+          description: Get paginated episodes succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                  - page
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Episode"
+                  page:
+                    type: object
+                    properties:
+                      limit:
+                        type: number
+                      offset:
+                        type: number
+                      count:
+                        type: number
+                      totalCount:
+                        type: number
+                      hasNextPage:
+                        type: boolean
+                      hasPreviousPage:
+                        type: boolean
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"
+  
+  /episodes/{episodeId}:
+    delete:
+      summary: Example to delete episode by id
+      parameters:
+        - in: path
+          name: episodeId
+          schema:
+            type: string
+            format: uuid
+          required: true
+      operationId: deleteEpisodeById
+      tags:
+        - episodes
+      responses:
+        '200':
+          description: Create episode succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Episode"
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        default:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalError"
 components:
   schemas:
     InternalError:
@@ -120,3 +354,5 @@ components:
       $ref: 'schemas/character.yaml'
     Episode:
       $ref: 'schemas/episode.yaml'
+    ErrorCode:
+      $ref: 'schemas/error-code.yaml'

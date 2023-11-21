@@ -1,11 +1,11 @@
-import { CharacterEntity } from "../../entities/character.entity";
+import { CharacterEntity } from "../../infra/database/entities/character.entity";
 import { orFail } from "../../../shared/functions/or-fail";
 import { NotFoundResourceError, ValidationError } from "../../../errors";
 import { UseCaseHandler } from "../../../shared/use-case-bus";
-import { CharacterReadRepository } from "../../domain/ports/character-read.repository";
+import { CharacterReadRepository } from "../../../domain/ports/character-read.repository";
 import { UPDATE_CHARACTER_USE_CASE_NAME, UpdateCharacterUseCase } from ".";
-import { CharacterWriteRepository } from "../../domain/ports/character-write.repository";
-import { EpisodeReadRepository } from "../../domain/ports/episode-read.repository";
+import { CharacterWriteRepository } from "../../../domain/ports/character-write.repository";
+import { EpisodeReadRepository } from "../../../domain/ports/episode-read.repository";
 
 export interface UpdateCharacterUseCaseDependencies {
   characterReadRepository: CharacterReadRepository;

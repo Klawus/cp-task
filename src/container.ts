@@ -11,7 +11,8 @@ import { AppConfig, loadAndParseConfig } from "./config/app";
 import { createApp } from "./app/app";
 import { registerCommonDependencies } from "./container/common";
 import { registerDatabase } from "./container/database";
-import { registerCommandHandlers } from "./container/use-case-handlers";
+import { registerUseCaseHandlers } from "./container/use-case-handlers";
+import { registerRouting } from "./container/routing";
 
 export interface ContainerDependencies {
   appConfig?: AppConfig;
@@ -30,7 +31,8 @@ export async function createContainer(
   });
 
   registerCommonDependencies(container, appConfig);
-  registerCommandHandlers(container);
+  registerUseCaseHandlers(container);
+  registerRouting(container);
   await registerDatabase(container, dependencies);
 
   container.register({

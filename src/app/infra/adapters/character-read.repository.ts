@@ -1,11 +1,11 @@
 import { EntityManager, ILike, Repository } from "typeorm";
-import { Character } from "../../domain/character";
+import { Character } from "../../../domain/character";
 import { UUID } from "../../../shared/value-objects/uuid";
-import { CharacterEntity } from "../../entities/character.entity";
+import { CharacterEntity } from "../database/entities/character.entity";
 import {
   CharacterReadRepository,
   GetCharactersParams,
-} from "../../domain/ports/character-read.repository";
+} from "../../../domain/ports/character-read.repository";
 import {
   DEFAULT_PAGE_REQUEST,
   Page,
@@ -29,6 +29,10 @@ export class TypeORMCharacterReadRepository implements CharacterReadRepository {
     return this.repo
       .findOne({ where: { id: id.value }, relations: ["episodes"] })
       .then((it) => it?.toDomain());
+  }
+
+  async findByName(name: string): Promise<Character | undefined> {
+    return this.repo.findOne({ where: { name } }).then((it) => it?.toDomain());
   }
 
   async findPaginated({

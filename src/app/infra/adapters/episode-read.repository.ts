@@ -1,11 +1,11 @@
-import { EntityManager, ILike, In, Repository } from "typeorm";
-import { Episode } from "../../domain/episode";
+import { EntityManager, In, Repository } from "typeorm";
+import { Episode } from "../../../domain/episode";
 import { UUID } from "../../../shared/value-objects/uuid";
-import { EpisodeEntity } from "../../entities/episode.entity";
+import { EpisodeEntity } from "../database/entities/episode.entity";
 import {
   EpisodeReadRepository,
   GetEpisodesParams,
-} from "../../domain/ports/episode-read.repository";
+} from "../../../domain/ports/episode-read.repository";
 import {
   DEFAULT_PAGE_REQUEST,
   Page,
@@ -31,6 +31,10 @@ export class TypeORMEpisodeReadRepository implements EpisodeReadRepository {
       .then((it) => it?.toDomain());
   }
 
+  async findByName(name: string): Promise<Episode | undefined> {
+    return this.repo.findOne({ where: { name } }).then((it) => it?.toDomain());
+  }
+
   async findByIds(ids: UUID[]): Promise<Episode[]> {
     const entities = await this.repo.findBy({
       id: In(ids.map((it) => it.value)),
@@ -44,13 +48,11 @@ export class TypeORMEpisodeReadRepository implements EpisodeReadRepository {
       offset = DEFAULT_PAGE_REQUEST.offset,
       limit = DEFAULT_PAGE_REQUEST.limit,
     },
-    query,
   }: GetEpisodesParams): Promise<Page<Episode>> {
     const [entities, totalCount] = await this.repo.findAndCount({
       take: limit,
       skip: offset,
       order: { createdAt: "DESC" },
-      ...(query && { where: { name: ILike(`%${query}%`) } }),
     });
 
     return paginate<Episode>(

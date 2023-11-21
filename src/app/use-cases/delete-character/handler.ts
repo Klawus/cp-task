@@ -1,9 +1,9 @@
 import { orFail } from "../../../shared/functions/or-fail";
-import { CharacterEntity } from "../../entities/character.entity";
+import { CharacterEntity } from "../../infra/database/entities/character.entity";
 import { UseCaseHandler } from "../../../shared/use-case-bus";
-import { CharacterReadRepository } from "../../domain/ports/character-read.repository";
+import { CharacterReadRepository } from "../../../domain/ports/character-read.repository";
 import { DELETE_CHARACTER_USE_CASE_NAME, DeleteCharacterUseCase } from ".";
-import { CharacterWriteRepository } from "../../domain/ports/character-write.repository";
+import { CharacterWriteRepository } from "../../../domain/ports/character-write.repository";
 import { NotFoundResourceError } from "../../../errors";
 
 export interface DeleteCharacterUseCaseDependencies {

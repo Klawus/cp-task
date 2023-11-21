@@ -1,7 +1,7 @@
 import { EntityManager, Repository } from "typeorm";
-import { Episode } from "../../domain/episode";
-import { EpisodeEntity } from "../../entities/episode.entity";
-import { EpisodeWriteRepository } from "../../domain/ports/episode-write.repository";
+import { Episode } from "../../../domain/episode";
+import { EpisodeEntity } from "../database/entities/episode.entity";
+import { EpisodeWriteRepository } from "../../../domain/ports/episode-write.repository";
 import { UUID } from "../../../shared/value-objects/uuid";
 
 interface TypeORMEpisodeWriteRepositoryDependencies {

@@ -11,9 +11,10 @@ export enum ErrorCode {
   USE_CASE_ERROR = "USE_CASE_ERROR",
   VALIDATION_ERROR = "VALIDATION_ERROR",
   INPUT_VALIDATION_ERROR = "INPUT_VALIDATION_ERROR",
+  ALREADY_EXISTS_ERROR = "ALREADY_EXISTS_ERROR",
 }
 
-export class CommandNotSupportedError extends Error {}
+export class UseCaseNotSupportedError extends Error {}
 
 export abstract class AppError extends Error {
   protected constructor(
@@ -30,7 +31,7 @@ export class InputValidationError extends AppError {
   constructor(details?: Record<PropertyPath, ErrorMessages>) {
     super(
       "Input validation failed, check out the details",
-      StatusCodes.UNPROCESSABLE_ENTITY,
+      StatusCodes.BAD_REQUEST,
       ErrorCode.INPUT_VALIDATION_ERROR,
       details,
     );
@@ -39,11 +40,7 @@ export class InputValidationError extends AppError {
 
 export class ValidationError extends AppError {
   constructor(message: string) {
-    super(
-      message,
-      StatusCodes.UNPROCESSABLE_ENTITY,
-      ErrorCode.VALIDATION_ERROR,
-    );
+    super(message, StatusCodes.BAD_REQUEST, ErrorCode.VALIDATION_ERROR);
   }
 }
 
@@ -67,6 +64,19 @@ export class NotFoundResourceError extends AppError {
       )}] not found`,
       StatusCodes.NOT_FOUND,
       ErrorCode.RESOURCE_NOT_FOUND,
+    );
+  }
+}
+
+export class AlreadyExistsError extends AppError {
+  constructor(resourceName: string, ...attributeNames: string[]) {
+    const joinedAttributes = `[${attributeNames.join(", ")}]`;
+    super(
+      `${resourceName} with given ${
+        attributeNames.length > 0 ? joinedAttributes : "attributes"
+      } already exists`,
+      StatusCodes.CONFLICT,
+      ErrorCode.ALREADY_EXISTS_ERROR,
     );
   }
 }

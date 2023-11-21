@@ -1,9 +1,9 @@
 import { orFail } from "../../../shared/functions/or-fail";
-import { EpisodeEntity } from "../../entities/episode.entity";
+import { EpisodeEntity } from "../../infra/database/entities/episode.entity";
 import { UseCaseHandler } from "../../../shared/use-case-bus";
-import { EpisodeReadRepository } from "../../domain/ports/episode-read.repository";
+import { EpisodeReadRepository } from "../../../domain/ports/episode-read.repository";
 import { DELETE_EPISODE_USE_CASE_NAME, DeleteEpisodeUseCase } from ".";
-import { EpisodeWriteRepository } from "../../domain/ports/episode-write.repository";
+import { EpisodeWriteRepository } from "../../../domain/ports/episode-write.repository";
 import { NotFoundResourceError } from "../../../errors";
 
 export interface DeleteEpisodeUseCaseDependencies {

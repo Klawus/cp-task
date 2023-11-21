@@ -1,12 +1,15 @@
-import { Character } from "../../domain/character";
+import { nullishOrFail } from "../../../shared/functions/nullish-or-fail";
+import { Character } from "../../../domain/character";
 import { UseCaseHandler } from "../../../shared/use-case-bus";
 import { CREATE_CHARACTER_USE_CASE_NAME, CreateCharacterUseCase } from ".";
-import { CharacterWriteRepository } from "../../domain/ports/character-write.repository";
-import { EpisodeReadRepository } from "../../domain/ports/episode-read.repository";
-import { ValidationError } from "../../../errors";
+import { CharacterWriteRepository } from "../../../domain/ports/character-write.repository";
+import { CharacterReadRepository } from "../../../domain/ports/character-read.repository";
+import { EpisodeReadRepository } from "../../../domain/ports/episode-read.repository";
+import { AlreadyExistsError, ValidationError } from "../../../errors";
 
 export interface CreateCharacterUseCaseDependencies {
   characterWriteRepository: CharacterWriteRepository;
+  characterReadRepository: CharacterReadRepository;
   episodeReadRepository: EpisodeReadRepository;
 }
 
@@ -18,9 +21,17 @@ export class CreateCharacterUseCaseHandler
   constructor(private dependencies: CreateCharacterUseCaseDependencies) {}
 
   async handle(input: CreateCharacterUseCase) {
-    const { characterWriteRepository, episodeReadRepository } =
-      this.dependencies;
+    const {
+      characterWriteRepository,
+      episodeReadRepository,
+      characterReadRepository,
+    } = this.dependencies;
     const { name, episodeIds } = input.payload;
+
+    await nullishOrFail(
+      characterReadRepository.findByName(name),
+      new AlreadyExistsError(Character.name, "name"),
+    );
 
     const episodes = await episodeReadRepository.findByIds(episodeIds);
 

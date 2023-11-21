@@ -7,7 +7,7 @@ export const GET_CHARACTERS_SCHEMA = z.object({
   }),
 });
 
-export type GetCharacterInputTransformed = z.output<
+export type GetCharactersInputTransformed = z.output<
   typeof GET_CHARACTERS_SCHEMA
 >;
-export type GetCharacterInput = z.input<typeof GET_CHARACTERS_SCHEMA>;
+export type GetCharactersInput = z.input<typeof GET_CHARACTERS_SCHEMA>;

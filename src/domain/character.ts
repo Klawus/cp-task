@@ -1,5 +1,5 @@
-import { ValidationError } from "../../errors";
-import { UUID } from "../../shared/value-objects/uuid";
+import { ValidationError } from "../errors";
+import { UUID } from "../shared/value-objects/uuid";
 import { Episode, EpisodeJSON } from "./episode";
 
 type CharacterProto = {
@@ -34,6 +34,10 @@ export class Character {
     this.id = proto.id ?? UUID.generate();
     this._name = proto.name;
     this._episodes = proto.episodes ?? [];
+  }
+
+  get name(): string {
+    return this._name;
   }
 
   get episodes(): Episode[] {
